@@ -28,6 +28,17 @@ export default function App() {
     }
   };
 
+  const editTodo = (data) => {
+    setTodos((state) =>
+      state.map((todo) => {
+        if (todo.id === data.id) {
+          return data;
+        }
+        return todo;
+      })
+    );
+  };
+
   const eraseTodo = (data) => {
     setTodos((state) => state.filter((todo) => todo.id !== data));
   };
@@ -39,7 +50,7 @@ export default function App() {
         <AddTodo onSubmit={addTodo} />
         <ScrollView elements={todos}>
           {todos.map((el) => (
-            <Todo todo={el} key={el.id} erase={eraseTodo} />
+            <Todo todo={el} key={el.id} erase={eraseTodo} edit={editTodo} />
           ))}
         </ScrollView>
       </View>
