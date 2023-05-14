@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "sandbox-todo",
-    "slug": "sandbox-todo",
+    "slug": "sigismund",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -15,16 +15,30 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.sigismund.sigismund"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.sigismund.sigismund"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "27b5d19c-96a1-4221-af56-d11c90534797"
+      }
+    },
+    "owner": "sigismund",
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/27b5d19c-96a1-4221-af56-d11c90534797"
     }
   }
 }
