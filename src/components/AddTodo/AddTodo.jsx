@@ -1,5 +1,16 @@
 import React, {useState} from "react";
-import { View, StyleSheet, TextInput, Pressable, Text, Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView, Platform } from "react-native";
+import {
+    Dimensions,
+    View,
+    StyleSheet,
+    TextInput,
+    Pressable,
+    Text,
+    Keyboard,
+    TouchableWithoutFeedback,
+    KeyboardAvoidingView,
+    Platform
+} from "react-native";
 
 export default function AddTodo({ onSubmit }) {
     const [input, setInput] = useState('');
@@ -16,8 +27,8 @@ export default function AddTodo({ onSubmit }) {
     };
 
     return (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <View style={s.block}>
+        <TouchableWithoutFeedback style={s.block} onPress={Keyboard.dismiss}>
+            <View style={s.addContainer}>
                 <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"}>
                     <TextInput style={s.input}
                         placeholder='Type something..'
@@ -37,21 +48,30 @@ export default function AddTodo({ onSubmit }) {
 
 const s = StyleSheet.create({
     block: {
+         width: Dimensions.get('window').width,
+        // flexDirection: 'row',
+        // justifyContent: 'space-around',
+        // alignItems: "center",
+        marginBottom: 5
+    },
+
+    addContainer: {
         width: '100%',
+        display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: "center",
-        marginBottom: 15
+        // justifyContent: 'space-between',
+        // alignItems: "center"
+         marginBottom: 10
     },
     
     input: {
-        width: "70%",
+        width: 250,
         height: 50,
         borderStyle: 'solid',
         borderBottomWidth: 2,
         borderBottomColor: '#3949ab', 
-        padding: 10,
-        margin: 'auto'
+        padding: 5,
+        // margin: 'auto'
     },
 
     addButton: {

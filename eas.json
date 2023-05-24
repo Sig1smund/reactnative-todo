@@ -10,7 +10,7 @@
 
       "preview": {
         "android": {
-          "buildType": "apk"
+          "buildType": "apk" /*-- eas build -p android --profile preview --*/
         },
       "ios": {
         "simulator": true

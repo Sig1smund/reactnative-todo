@@ -13,7 +13,6 @@ export default function App() {
 
   const addTodo = (title) => {
     if (!title) {
-      alert("Русский корабль, иди нахуй!");
       setInput("");
     }
     if (!todos.some((todo) => isEqual(title, todo.name))) {
@@ -29,16 +28,11 @@ export default function App() {
   };
 
   const editTodo = (data) => {
-    console.log(data);
     setTodos((state) =>
       state.map((todo) => {
-        if (
-          todo.id === data.id &&
-          !todos.some((todo) => isEqual(data.name, todo.name))
-        ) {
+        if (todo.id === data.id) {
           return data;
         }
-        alert("Element with this name already exists..");
         return todo;
       })
     );
@@ -50,18 +44,22 @@ export default function App() {
 
   return (
     <View>
-      <AppBar title={"ToDo"} />
+      <AppBar title={"ReactNative ToDo"} />
       <View style={s.container}>
         <AddTodo onSubmit={addTodo} />
-        <FlatList
-          data={todos}
-          renderItem={(todo) => (
-            <Todo todo={todo} erase={eraseTodo} edit={editTodo}>
-              {todo.item.name}
-            </Todo>
-          )}
-          keyExtractor={(todo) => todo.id}
-        />
+        <View>
+          <FlatList
+            onEndReachedThreshold={0.5}
+            contentContainerStyle={{ flexGrow: 1, paddingBottom: 5 }}
+            data={todos}
+            renderItem={(todo) => (
+              <Todo todo={todo} erase={eraseTodo} edit={editTodo}>
+                {todo.item.name}
+              </Todo>
+            )}
+            keyExtractor={(todo) => todo.id}
+          />
+        </View>
       </View>
       <StatusBar style="light" />
     </View>
@@ -70,8 +68,10 @@ export default function App() {
 
 const s = StyleSheet.create({
   container: {
-    paddingHorizontal: 15,
-    paddingVertical: 20,
+    // flex: 1,
+    width: "100%",
+    paddingHorizontal: 5,
+    paddingVertical: 5,
     marginHorizontal: "auto",
   },
 });

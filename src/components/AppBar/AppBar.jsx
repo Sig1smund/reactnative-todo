@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { Dimensions, View, Text, StyleSheet } from "react-native";
 
 export default function AppBar({title}) {
     return (
@@ -11,6 +11,7 @@ export default function AppBar({title}) {
 
 const s = StyleSheet.create({
     appbar: {
+        width: Dimensions.get('window').width,
         height: 90,
         alignItems: "center",
         justifyContent: 'flex-end',
@@ -19,7 +20,9 @@ const s = StyleSheet.create({
 
     },
     text: {
-    color: "white",
+        color: "white",
         fontSize: 20,
-  },
-})
+        fontStyle: 'italic',
+
+    },
+});
