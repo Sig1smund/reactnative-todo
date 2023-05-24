@@ -3,7 +3,7 @@ import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import { isEqual } from "lodash";
 import { nanoid } from "nanoid/non-secure";
-import { StyleSheet, ScrollView, View } from "react-native";
+import { StyleSheet, View, FlatList } from "react-native";
 import AddTodo from "./src/components/AddTodo/AddTodo";
 import AppBar from "./src/components/AppBar/AppBar";
 import Todo from "./src/components/Todo/Todo";
@@ -29,11 +29,16 @@ export default function App() {
   };
 
   const editTodo = (data) => {
+    console.log(data);
     setTodos((state) =>
       state.map((todo) => {
-        if (todo.id === data.id) {
+        if (
+          todo.id === data.id &&
+          !todos.some((todo) => isEqual(data.name, todo.name))
+        ) {
           return data;
         }
+        alert("Element with this name already exists..");
         return todo;
       })
     );
@@ -48,11 +53,15 @@ export default function App() {
       <AppBar title={"ToDo"} />
       <View style={s.container}>
         <AddTodo onSubmit={addTodo} />
-        <ScrollView elements={todos}>
-          {todos.map((el) => (
-            <Todo todo={el} key={el.id} erase={eraseTodo} edit={editTodo} />
-          ))}
-        </ScrollView>
+        <FlatList
+          data={todos}
+          renderItem={(todo) => (
+            <Todo todo={todo} erase={eraseTodo} edit={editTodo}>
+              {todo.item.name}
+            </Todo>
+          )}
+          keyExtractor={(todo) => todo.id}
+        />
       </View>
       <StatusBar style="light" />
     </View>

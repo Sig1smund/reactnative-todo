@@ -1,10 +1,10 @@
-import {useState, useMemo} from "react";
-import { StyleSheet, View, Text, Pressable, TouchableOpacity, TextInput } from "react-native";
+import { useState, useMemo } from "react";
+import { StyleSheet, View, Text, Pressable, TouchableOpacity, TextInput, TouchableWithoutFeedback, KeyboardAvoidingView, Keyboard, Platform } from "react-native";
 
 export default function Todo({ todo, erase, edit }) {
     const [isChecked, setIsChecked] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
-    const [editedTodo, setEditedTodo] = useState(todo.name)
+    const [editedTodo, setEditedTodo] = useState(todo.item.name);
 
     const memoizedIsChecked = useMemo(() => isChecked, [isChecked]);
 
@@ -12,48 +12,54 @@ export default function Todo({ todo, erase, edit }) {
         return setIsChecked((isChecked) => !isChecked);
     }
 
-    const editTodo = (data) => {
+    const editTodo = (todo) => {
         setIsEdit(prevState => !prevState);
         if (isEdit) {
-            const todo = {
-                id: data.id,
-                isChecked: isChecked,
-                name: editedTodo,
-            };
-            edit(todo);
+            const newTodo = {
+                    id: todo.item.id,
+                    isChecked: todo.item.isChecked,
+                    name: editedTodo,
+            }
+            edit(newTodo);
         }
     };
 
 
     return (
-        <View style={[isChecked ? s.todoDone : s.todo]}>
-                <TouchableOpacity 
+        // <TouchableWithoutFeedback onPress={Keyboard.dismiss()}>
+            <View style={[isChecked ? s.todoDone : s.todo]}>
+                <TouchableOpacity
                     style={[isChecked ? s.checkboxWrapDone : s.checkboxWrap]}
                     disabled={false}
                     value={memoizedIsChecked}
-                onPress={handleToggle} />
-            {isEdit ? (
-                <TextInput
-                    style={s.input}
-                    onChangeText={value => setEditedTodo(value)}
-                    value={editedTodo}
-                    autoCorrect={false}
-                    autoCapitalize='none'
-                />) : (
-                <>
-                <Text style={s.text}>{todo.name}</Text>
-                </>
-            )}
-            <View style={s.buttonBlock}>
-                <Pressable style={s.button} onPress={() => editTodo(todo)}>
-                    <Text style={s.buttonText}>Edit</Text>
-                </Pressable>
-                <Pressable style={s.button} onPress={() => erase(todo.id)}>
-                    <Text style={s.buttonText}>X</Text>
-                </Pressable>
+                    onPress={handleToggle} />
+                {isEdit ? (
+              
+                    // <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"}>
+                        <TextInput
+                            style={s.input}
+                            onChangeText={value => setEditedTodo(value)}
+                            value={editedTodo}
+                            autoCorrect={false}
+                            autoCapitalize='none'
+                        />
+                    // </KeyboardAvoidingView>
+                ) : (
+                    <>
+                        <Text style={s.text}>{todo.item.name}</Text>
+                    </>
+                )}
+                <View style={s.buttonBlock}>
+                    <Pressable style={s.button} onPress={() => editTodo(todo)}>
+                        <Text style={s.buttonText}>Edit</Text>
+                    </Pressable>
+                    <Pressable style={s.button} onPress={() => erase(todo.item.id)}>
+                        <Text style={s.buttonText}>X</Text>
+                    </Pressable>
+                </View>
             </View>
-        </View>
-    )
+        // </TouchableWithoutFeedback>
+    );
 }
 
 const s = StyleSheet.create({

@@ -1,38 +1,43 @@
 import React, {useState} from "react";
-import { View, StyleSheet, TextInput, Pressable, Text } from "react-native";
+import { View, StyleSheet, TextInput, Pressable, Text, Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView, Platform } from "react-native";
 
 export default function AddTodo({ onSubmit }) {
-    const [input, setInput] = useState('')
+    const [input, setInput] = useState('');
     
     const handleAddTodo = () => {
-        if (!input.trim()){
-            alert('Русский корабль, иди нахуй!')
+        if (!input.trim()) {
+            alert('Type something to create todo element')
             setInput('')
         }
         if (input.trim()) {
             onSubmit(input);
             setInput('')
         }
-    }
+    };
 
     return (
-        <View style={s.block}>
-            <TextInput style={s.input}
-                placeholder='Type something..'
-                onChangeText={value => setInput(value)}
-                value={input}
-                autoCorrect={false}
-                autoCapitalize='none'
-            />
-            <Pressable style={s.addButton} onPress={handleAddTodo}>
-                <Text style={s.addButtonText}>Add</Text>
-            </Pressable>
-        </View>
-    )
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View style={s.block}>
+                <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"}>
+                    <TextInput style={s.input}
+                        placeholder='Type something..'
+                        onChangeText={value => setInput(value)}
+                        value={input}
+                        autoCorrect={false}
+                        autoCapitalize='none'
+                    />
+                </KeyboardAvoidingView>
+                <Pressable style={s.addButton} onPress={handleAddTodo}>
+                    <Text style={s.addButtonText}>Add</Text>
+                </Pressable>
+            </View>
+        </TouchableWithoutFeedback>
+    );
 }
 
 const s = StyleSheet.create({
     block: {
+        width: '100%',
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: "center",
@@ -46,6 +51,7 @@ const s = StyleSheet.create({
         borderBottomWidth: 2,
         borderBottomColor: '#3949ab', 
         padding: 10,
+        margin: 'auto'
     },
 
     addButton: {
