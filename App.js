@@ -3,7 +3,13 @@ import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import { isEqual } from "lodash";
 import { nanoid } from "nanoid/non-secure";
-import { StyleSheet, View, FlatList } from "react-native";
+import {
+  StyleSheet,
+  View,
+  FlatList,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 import AddTodo from "./src/components/AddTodo/AddTodo";
 import AppBar from "./src/components/AppBar/AppBar";
 import Todo from "./src/components/Todo/Todo";
@@ -43,23 +49,38 @@ export default function App() {
   };
 
   return (
-    <View>
+    <View
+      style={{
+        postion: "absolute",
+        display: "flex",
+        flexDirection: "column",
+        flex: 1,
+      }}
+    >
       <AppBar title={"ReactNative ToDo"} />
       <View style={s.container}>
         <AddTodo onSubmit={addTodo} />
-        <View>
-          <FlatList
-            onEndReachedThreshold={0.5}
-            contentContainerStyle={{ flexGrow: 1, paddingBottom: 5 }}
-            data={todos}
-            renderItem={(todo) => (
-              <Todo todo={todo} erase={eraseTodo} edit={editTodo}>
-                {todo.item.name}
-              </Todo>
-            )}
-            keyExtractor={(todo) => todo.id}
-          />
-        </View>
+        <KeyboardAvoidingView
+          behavior={Platform.OS == "ios" ? "padding" : "height"}
+          keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 0}
+          style={{ flex: 1 }}
+        >
+          <View style={{ flex: 1 }}>
+            <FlatList
+              onEndReachedThreshold={0.5}
+              contentContainerStyle={{
+                flexGrow: 1,
+              }}
+              data={todos}
+              renderItem={(todo) => (
+                <Todo todo={todo} erase={eraseTodo} edit={editTodo}>
+                  {todo.item.name}
+                </Todo>
+              )}
+              keyExtractor={(todo) => todo.id}
+            />
+          </View>
+        </KeyboardAvoidingView>
       </View>
       <StatusBar style="light" />
     </View>
@@ -68,7 +89,7 @@ export default function App() {
 
 const s = StyleSheet.create({
   container: {
-    // flex: 1,
+    flex: 1,
     width: "100%",
     paddingHorizontal: 5,
     paddingVertical: 5,

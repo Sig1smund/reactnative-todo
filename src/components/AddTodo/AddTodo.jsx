@@ -19,10 +19,12 @@ export default function AddTodo({ onSubmit }) {
         if (!input.trim()) {
             alert('Type something to create todo element')
             setInput('')
+            Keyboard.dismiss()
         }
         if (input.trim()) {
             onSubmit(input);
             setInput('')
+            Keyboard.dismiss()
         }
     };
 
@@ -59,8 +61,6 @@ const s = StyleSheet.create({
         width: '100%',
         display: 'flex',
         flexDirection: 'row',
-        // justifyContent: 'space-between',
-        // alignItems: "center"
          marginBottom: 10
     },
     

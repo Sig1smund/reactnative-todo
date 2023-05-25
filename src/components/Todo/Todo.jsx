@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { StyleSheet, View, Text, Pressable, TouchableOpacity, TextInput, TouchableWithoutFeedback, KeyboardAvoidingView, Keyboard, Platform } from "react-native";
+import { StyleSheet, View, Text, Pressable, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from "react-native";
 
 export default function Todo({ todo, erase, edit }) {
     const [isChecked, setIsChecked] = useState(false);
@@ -20,13 +20,15 @@ export default function Todo({ todo, erase, edit }) {
                     isChecked: todo.item.isChecked,
                     name: editedTodo,
             }
+            Keyboard.dismiss();
             edit(newTodo);
         }
+        Keyboard.dismiss();
+
     };
 
-
     return (
-        // <TouchableWithoutFeedback onPress={Keyboard.dismiss()}>
+        <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"}>
             <View style={[isChecked ? s.todoDone : s.todo]}>
                 <TouchableOpacity
                     style={[isChecked ? s.checkboxWrapDone : s.checkboxWrap]}
@@ -34,16 +36,14 @@ export default function Todo({ todo, erase, edit }) {
                     value={memoizedIsChecked}
                     onPress={handleToggle} />
                 {isEdit ? (
-              
-                    // <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"}>
-                        <TextInput
-                            style={s.input}
-                            onChangeText={value => setEditedTodo(value)}
-                            value={editedTodo}
-                            autoCorrect={false}
-                            autoCapitalize='none'
-                        />
-                    // </KeyboardAvoidingView>
+    
+                    <TextInput
+                        style={s.input}
+                        onChangeText={value => setEditedTodo(value)}
+                        value={editedTodo}
+                        autoCorrect={false}
+                        autoCapitalize='none'
+                    />
                 ) : (
                     <>
                         <Text style={s.text}>{todo.item.name}</Text>
@@ -58,7 +58,7 @@ export default function Todo({ todo, erase, edit }) {
                     </Pressable>
                 </View>
             </View>
-        // </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
     );
 }
 
@@ -118,7 +118,7 @@ const s = StyleSheet.create({
     },
 
     input: {
-        width: "70%",
+        width: 250,
         height: 50,
         borderStyle: 'solid',
         borderBottomWidth: 2,
